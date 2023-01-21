@@ -36,6 +36,7 @@ export default class RollDices extends Component {
         }, 1000)
     }
     // Chặn spam click 
+
     debounce = (func, timeout = 1000) => {
         let timer;
         return (...args) => {
@@ -44,7 +45,24 @@ export default class RollDices extends Component {
         };
     }
 
-    processChange = this.debounce(() => this.rand())
+    throttle(func, delay = 1000) {
+        let lastCall = 0;
+
+        return function (...args) {
+            const now = new Date().getTime();
+
+            console.log(now);
+
+            if (now - lastCall < delay) {
+                return;
+            }
+
+            lastCall = now;
+            return func(...args);
+        };
+    }
+
+    processChange = this.throttle(() => this.rand())
 
     render() {
         return (
